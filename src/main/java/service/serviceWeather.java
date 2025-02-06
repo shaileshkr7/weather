@@ -1,5 +1,6 @@
 package service;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.net.HttpURLConnection;
@@ -8,6 +9,7 @@ import java.util.Scanner;
 
 @Service
 public class serviceWeather {
+    @Cacheable("weather")
     public String getWeather(String city) {
         try {
             String urlString = "https://wttr.in/" + city + "?format=%C+%t+%w";
@@ -22,7 +24,7 @@ public class serviceWeather {
                 throw new RuntimeException("HttpResponseCode: " + responseCode);
             } else {
                 while (sc.hasNext()) {
-                    inline += sc.nextLine();
+                    inline = inline + sc.nextLine();
                 }
                 sc.close();
             }
